@@ -1,7 +1,7 @@
 {
   "id": "2e-npc-shop",
   "title": "2e NPC Shop",
-  "version": "12.241208.03",
+  "version": "12.241208.04",
   "compatibility": {
     "minimum": "12",
     "verified": "12",
@@ -52,5 +52,5 @@
       "flags": {}
     }
   ],
-  "manifest": "https://github.com/dudeanddragons/2e-npc-shop/blob/2e-npc-shop/module.json"
+  "manifest": "https://raw.githubusercontent.com/dudeanddragons/2e-npc-shop/refs/heads/2e-npc-shop/module.json"
 }
