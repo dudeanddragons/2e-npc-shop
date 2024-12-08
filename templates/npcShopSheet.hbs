@@ -1,0 +1,473 @@
+<div class="npc-shop">
+  <!-- Header Section -->
+  <header class="sheet-header">
+    <table class="header-table">
+      <tr>
+        <td class="shop-name">
+          <h1>{{actor.name}}</h1>
+        </td>
+        <td class="dropdown-column">
+          <label for="interacting-actor-select" class="dropdown-label">Select Character:</label>
+          <select id="interacting-actor-select" class="interacting-actor-dropdown">
+            <option value="" selected>Select a character</option>
+            {{#each actorOptions}}
+            <option value="{{id}}" {{#if ../currentActorId}}{{#ifEquals id ../currentActorId}}selected{{/ifEquals}}{{/if}}>{{name}}</option>
+            {{/each}}
+          </select>
+        </td>
+      </tr>
+    </table>
+    </header>
+    <!-- Character Funds -->
+    <div class="character-funds">
+      <strong>Character Funds:</strong>
+      <span class="fund-pp"><img src="icons/commodities/currency/coin-inset-lightning-silver.webp" alt="PP" title="Platinum Coins" /> {{funds.pp}} pp</span>
+      <span class="fund-gp"><img src="icons/commodities/currency/coin-engraved-tail-gold.webp" alt="GP" title="Gold Coins" /> {{funds.gp}} gp</span>
+      <span class="fund-ep"><img src="icons/commodities/currency/coin-engraved-oval-steel.webp" alt="EP" title="Electrum Coins" /> {{funds.ep}} ep</span>
+      <span class="fund-sp"><img src="icons/commodities/currency/coin-inset-compass-silver.webp" alt="SP" title="Silver Coins" /> {{funds.sp}} sp</span>
+      <span class="fund-cp"><img src="icons/commodities/currency/coin-inset-copper-axe.webp" alt="CP" title="Copper Coins" /> {{funds.cp}} cp</span>
+    </div>
+
+
+  <!-- Tabs Navigation -->
+  <nav class="sheet-tabs">
+    <div class="tab-item active" data-tab="shop">
+      <i class="fas fa-store"></i>
+    </div>
+    <div class="tab-item" data-tab="sell">
+      <i class="fas fa-coins"></i>
+    </div>
+    <div class="tab-item" data-tab="services">
+      <i class="fas fa-utensils"></i>
+    </div>
+    <div class="tab-item" data-tab="forge">
+      <i class="fas fa-hammer"></i>
+    </div>
+      {{#if isGM}}
+    <div class="tab-item" data-tab="gm-settings">
+      <i class="fas fa-gear"></i>
+    </div>
+    {{/if}}
+  </nav>
+
+  <!-- Tab Content -->
+  <form>
+  <div class="sheet-body" data-tab="shop">
+
+
+<!-- Shop Inventory -->
+<section>
+  <h3>Shop Inventory</h3>
+  <table id="inventory-container" class="inventory-table">
+    <thead>
+      <tr>
+        <th class="image-column"></th>
+        <th class="name-column">Name</th>
+        <th class="type-column">Type</th>
+        <th class="quantity-column">Quantity</th>
+        <th class="cost-column">Cost</th>
+        <th class="weight-column">Weight</th>
+        <th class="actions-column"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each items}}
+      {{log this}} <!-- Debugging: Logs the current item object -->
+      <tr class="inventory-item" data-item-id="{{id}}">
+        <td class="image-column">
+          <img src="{{img}}" alt="{{name}}" class="item-img">
+        </td>
+      <td class="name-column">
+        <a class="view-item" data-item-id="{{id}}">{{name}}</a>
+      </td>
+        <td class="type-column">{{type}}</td>
+        <td class="quantity-column">{{quantity}}</td>
+        <td class="cost-column">
+          <span 
+            class="adjusted-cost" 
+            title="Original: {{originalCost.value}} {{originalCost.currency}}">
+            {{#if adjustedCost}}
+              {{#if adjustedCost.pp}}{{adjustedCost.pp}} pp {{/if}}
+              {{#if adjustedCost.gp}}{{adjustedCost.gp}} gp {{/if}}
+              {{#if adjustedCost.ep}}{{adjustedCost.ep}} ep {{/if}}
+              {{#if adjustedCost.sp}}{{adjustedCost.sp}} sp {{/if}}
+              {{#if adjustedCost.cp}}{{adjustedCost.cp}} cp {{/if}}
+              {{#if (and (not adjustedCost.pp) (not adjustedCost.gp) (not adjustedCost.ep) (not adjustedCost.sp) (not adjustedCost.cp))}}
+                0 cp
+              {{/if}}
+            {{else}}
+              <em>Price unavailable</em>
+            {{/if}}
+          </span>
+        </td>
+        <td class="weight-column">{{weight}}</td>
+        <td class="actions-column">
+        <button class="itemBuyButton" data-item-id="{{id}}" title="Buy Item">
+        <i class="fa-solid fa-coins"></i>
+        </button>
+      </td>
+    </tr>
+    {{else}}
+    <tr class="no-items-row">
+      <td colspan="7">No items in inventory. Drag and drop items here to add them.</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+  </div>
+
+<div class="sheet-body" data-tab="services" style="display: none;">
+  <section>
+    <h3>Services</h3>
+    <table id="services-container" class="inventory-table">
+      <thead>
+        <tr>
+          <th class="name-column">Name</th>
+          <th class="cost-column">Cost</th>
+          <th class="actions-column"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each services}}
+        <tr class="service-row" data-service-index="{{@index}}">
+          <td class="name-column">{{name}}</td>
+          <td class="cost-column">
+            <span class="adjusted-cost">
+              {{#if adjustedCost.pp}}{{adjustedCost.pp}} pp {{/if}}
+              {{#if adjustedCost.gp}}{{adjustedCost.gp}} gp {{/if}}
+              {{#if adjustedCost.ep}}{{adjustedCost.ep}} ep {{/if}}
+              {{#if adjustedCost.sp}}{{adjustedCost.sp}} sp {{/if}}
+              {{#if adjustedCost.cp}}{{adjustedCost.cp}} cp {{/if}}
+            </span>
+          </td>
+          <td class="actions-column">
+            <button class="use-service-btn" data-service-index="{{@index}}" title="Use Service">
+              <i class="fas fa-coins"></i>
+            </button>
+          </td>
+        </tr>
+        {{else}}
+        <tr class="no-items-row">
+          <td colspan="3">No services available. Please check back later.</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </section>
+</div>
+
+  <!-- Sell Items to Merchant -->
+<div class="sheet-body" data-tab="sell" style="display: none;">
+  <section>
+    <h3>Character Inventory</h3>
+    <table id="sell-inventory-container" class="inventory-table">
+      <thead>
+        <tr>
+          <th class="image-column"></th>
+          <th class="name-column">Name</th>
+          <th class="type-column">Type</th>
+          <th class="quantity-column">Quantity</th>
+          <th class="cost-column">Value</th>
+          <th class="weight-column">Weight</th>
+          <th class="actions-column"></th>
+        </tr>
+      </thead>
+<tbody>
+  {{#each characterItems}}
+    {{#if adjustedCost}}
+      <tr class="inventory-item" data-item-id="{{id}}">
+        <td class="image-column"><img src="{{img}}" alt="{{name}}" class="item-img"></td>
+        <td class="name-column">{{name}}</td>
+        <td class="type-column">{{type}}</td>
+        <td class="quantity-column">{{quantity}}</td>
+        <td class="cost-column">
+          <span class="adjusted-cost">
+            {{#if adjustedCost.pp}}{{adjustedCost.pp}} pp {{/if}}
+            {{#if adjustedCost.gp}}{{adjustedCost.gp}} gp {{/if}}
+            {{#if adjustedCost.ep}}{{adjustedCost.ep}} ep {{/if}}
+            {{#if adjustedCost.sp}}{{adjustedCost.sp}} sp {{/if}}
+            {{#if adjustedCost.cp}}{{adjustedCost.cp}} cp {{/if}}
+          </span>
+        </td>
+        <td class="weight-column">{{weight}}</td>
+        <td class="actions-column">
+          <button class="sellButton" data-item-id="{{id}}" title="Sell Item">
+            <i class="fa-solid fa-coins"></i>
+          </button>
+        </td>
+      </tr>
+    {{/if}}
+  {{else}}
+    <tr class="no-items-row">
+      <td colspan="7">No items available for selling.</td>
+    </tr>
+  {{/each}}
+</tbody>
+
+    </table>
+  </section>
+</div>
+
+  
+<!-- Forge Tab Content -->
+<div class="sheet-body" data-tab="forge" style="display: none;">
+  <section>
+    <h3>Forge</h3>
+    <table id="forge-container" class="inventory-table">
+      <thead>
+        <tr>
+          <th class="image-column"></th>
+          <th class="name-column">Name</th>
+          <th class="type-column">Material</th>
+          <th class="durability-column">Durability</th>
+          <th class="repair-cost-column">Cost</th>
+          <th class="actions-column"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each forgeItems}}
+<tr class="forge-item" data-item-id="{{id}}">
+  <td class="image-column">
+    <img src="{{img}}" alt="{{name}}" class="item-img">
+  </td>
+  <td class="name-column">{{name}}</td>
+  <td class="type-column">{{capitalizeFirstLetter material}}</td>
+  <td class="durability-column">
+    {{currentDurability}} / {{maxDurability}}
+  </td>
+  <td class="repair-cost-column">
+    <span class="repair-cost"> 
+      {{#if repairCost.pp}}{{repairCost.pp}} pp {{/if}}
+      {{#if repairCost.gp}}{{repairCost.gp}} gp {{/if}}
+      {{#if repairCost.ep}}{{repairCost.ep}} ep {{/if}}
+      {{#if repairCost.sp}}{{repairCost.sp}} sp {{/if}}
+      {{#if repairCost.cp}}{{repairCost.cp}} cp {{/if}}
+    </span>
+  </td>
+  <td class="actions-column">
+    <button class="repair-item-btn" data-item-id="{{id}}" title="Repair Item">
+      <i class="fas fa-hammer"></i>
+    </button>
+  </td>
+</tr>
+
+        {{else}}
+        <tr class="no-items-row">
+          <td colspan="6">No armor items available for repair.</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </section>
+</div>
+
+
+
+
+      <!-- GM Settings Tab -->
+      <div class="sheet-body" data-tab="gm-settings" style="display: none;">
+      <!-- Shop Name Field in a Table -->
+      <section class="shop-name-section">
+        <table class="shop-name-table">
+          <tr>
+            <td class="portrait-column">
+              <img src="{{actor.img}}" alt="Shop Portrait" class="shop-portrait" id="shop-portrait" data-action="change-portrait">
+            </td>
+            <td class="name-input-column">
+              <input type="text" id="shop-name-input" name="shopName" value="{{actor.name}}">
+            </td>
+          </tr>
+        </table>
+      </section>
+
+<!-- Multipliers Section -->
+<section>
+  <h3>Multipliers</h3>
+  <table class="gm-multipliers">
+    <thead>
+      <tr>
+        <th colspan="2">Sell</th>
+        <th colspan="3">Buy</th>
+        <th colspan="3">Repair</th>
+      </tr>
+      <tr>
+        <th>Items</th>
+        <th>Magic</th>
+        <th>Items</th>
+        <th>Magic</th>
+        <th>Treasure</th>
+        <th>Metal</th>
+        <th>Leather</th>
+        <th>Other</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="number" name="sellMultiplierItems" 
+                 value="{{multipliers.sellMultiplierItems}}" 
+                 step="0.1" min="0" />
+        </td>
+        <td>
+          <input type="number" name="sellMultiplierMagic" 
+                 value="{{multipliers.sellMultiplierMagic}}" 
+                 step="0.1" min="0" />
+        </td>
+        <td>
+          <input type="number" name="buyMultiplierItems" 
+                 value="{{multipliers.buyMultiplierItems}}" 
+                 step="0.1" min="0" />
+        </td>
+        <td>
+          <input type="number" name="buyMultiplierMagic" 
+                 value="{{multipliers.buyMultiplierMagic}}" 
+                 step="0.1" min="0" />
+        </td>
+        <td>
+          <input type="number" name="buyMultiplierTreasure" 
+                 value="{{multipliers.buyMultiplierTreasure}}" 
+                 step="0.1" min="0" />
+        </td>
+        <td>
+          <input type="number" name="repairMultiplierMetal" 
+                 value="{{repairCosts.metal}}" 
+                 step="1" min="0" />
+        </td>
+        <td>
+          <input type="number" name="repairMultiplierLeather" 
+                 value="{{repairCosts.leather}}" 
+                 step="1" min="0" />
+        </td>
+        <td>
+          <input type="number" name="repairMultiplierOther" 
+                 value="{{repairCosts.other}}" 
+                 step="1" min="0" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<P></P>
+
+<!-- Shop Inventory Management -->
+<section>
+  <h3>Shop Inventory</h3>
+    <button id="identify-all-items-btn" class="gm-action-btn" title="Identify All Items">
+  <i class="fas fa-check"></i> Identify All Items
+  </button>
+  <table id="inventory-container" class="inventory-table">
+    <thead>
+      <tr>
+        <th class="image-column"></th>
+        <th class="name-column">Name</th>
+        <th class="type-column">Type</th>
+        <th class="quantity-column">Quantity</th>
+        <th class="cost-column">Cost</th>
+        <th class="weight-column">Weight</th>
+        <th class="actions-column"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each items}}
+      {{log this}} <!-- Debugging: Logs the current item object -->
+      <tr class="inventory-item" data-item-id="{{id}}">
+        <td class="image-column">
+          <img src="{{img}}" alt="{{name}}" class="item-img">
+        </td>
+      <td class="name-column">
+        <a class="edit-item" data-item-id="{{id}}">{{name}}</a>
+      </td>
+        <td class="type-column">{{type}}</td>
+        <td class="quantity-column">
+          <input type="number" class="quantityInput" data-item-id="{{id}}" value="{{quantity}}" min="0">
+        </td>
+        <td class="cost-column">
+          <span 
+            class="adjusted-cost" 
+            title="Original: {{originalCost.value}} {{originalCost.currency}}">
+            {{#if adjustedCost}}
+              {{#if adjustedCost.pp}}{{adjustedCost.pp}} pp {{/if}}
+              {{#if adjustedCost.gp}}{{adjustedCost.gp}} gp {{/if}}
+              {{#if adjustedCost.ep}}{{adjustedCost.ep}} ep {{/if}}
+              {{#if adjustedCost.sp}}{{adjustedCost.sp}} sp {{/if}}
+              {{#if adjustedCost.cp}}{{adjustedCost.cp}} cp {{/if}}
+            {{else}}
+              <em>Price unavailable</em> <!-- Fallback if adjustedCost is missing -->
+            {{/if}}
+          </span>
+        </td>
+        <td class="weight-column">{{weight}}</td>
+        <td class="actions-column">
+          <button class="item-delete-btn" data-item-id="{{id}}" title="Delete Item">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      {{else}}
+      <tr class="no-items-row">
+        <td colspan="7">No items in inventory. Drag and drop items here to add them.</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
+
+<!-- Services Management Section -->
+<section>
+  <h3>Manage Services</h3>
+  <table id="services-container" class="inventory-table">
+    <thead>
+      <tr>
+        <th class="name-column">Name</th>
+        <th class="cost-column">Cost (cp)</th>
+        <th class="actions-column"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each services}}
+      <tr class="service-row" data-service-index="{{@index}}">
+        <td class="name-column">
+          <input 
+            type="text" 
+            class="service-name-input" 
+            value="{{name}}" 
+            data-service-index="{{@index}}" 
+            placeholder="Enter service name" />
+        </td>
+        <td class="cost-column">
+          <input 
+            type="number" 
+            class="service-cost-input" 
+            value="{{cost}}" 
+            data-service-index="{{@index}}" 
+            min="0" 
+            step="1" 
+            placeholder="Enter cost in copper" />
+        </td>
+<td class="actions-column">
+  <button 
+    class="delete-service-btn" 
+    data-service-index="{{@index}}" 
+    title="Delete Service">
+    <i class="fas fa-trash"></i>
+  </button>
+</td>
+
+      </tr>
+      {{else}}
+      <tr class="no-items-row">
+        <td colspan="3">No services available. Add new services below.</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <!-- Add New Service Button -->
+  <div class="add-service-row">
+    <button id="add-service-btn" title="Add New Service" class="item-delete-btn">
+      <i class="fas fa-plus"></i> Add Service
+    </button>
+  </div>
+</section>
+</div>
+</form>

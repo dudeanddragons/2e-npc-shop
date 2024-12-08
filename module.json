@@ -1,0 +1,55 @@
+{
+  "id": "2e-npc-shop",
+  "title": "2e NPC Shop",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "scripts": [
+
+  ],
+  "esmodules": [
+    "scripts/currencyManager.js",
+    "scripts/shopUI.js",
+    "scripts/shopTabs.js",
+    "scripts/GM.js",
+    "scripts/shopCore.js",
+    "scripts/services.js",
+    "scripts/forge.js"
+  ],
+  "styles": [
+    "styles/npcShop.css"
+  ],
+  "packs": [
+    {
+      "name": "npc-shops-macros",
+      "label": "NPC Shops Macros",
+      "path": "packs/npc-shops-macros",
+      "type": "Macro",
+      "system": "ars",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "npc-shops-items",
+      "label": "NPC Shops Items",
+      "path": "packs/npc-shops-items",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "ars"
+    }
+  ],
+  "authors": [
+    {
+      "name": "DudeandDragons",
+      "flags": {}
+    }
+  ],
+  "manifest": ""
+}

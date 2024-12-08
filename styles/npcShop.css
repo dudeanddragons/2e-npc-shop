@@ -1,0 +1,459 @@
+/* Root Variables */
+:root {
+    --npcshop-background: url("/systems/ars/ui/parchment.webp");
+    --npcshop-header-bg: rgba(255, 245, 230, 0.9);
+    --npcshop-border-color: var(--ars_brown);
+    --npcshop-text-color: black;
+    --npcshop-highlight-color: var(--ars_gold);
+    --npcshop-tab-background: #000000; /* Tab background color */
+    --npcshop-tab-inactive: #75869f;  /* Inactive tab color */
+    --npcshop-tab-active: #ffffff;    /* Active tab text color */
+    --npcshop-tab-hover: #444444;    /* Hover tab color */
+}
+
+/* List Item Hover Styling */
+.npc-shop .inventory-list li:hover,
+.npc-shop .cart-item:hover,
+.npc-shop .service-item:hover,
+.npc-shop .armor-item:hover {
+    background: rgba(255, 255, 200, 0.6); /* Light golden hover effect */
+    border-color: rgba(255, 255, 150, 0.8); /* Slightly brighter border on hover */
+}
+
+
+/* General Layout */
+.npc-shop {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    background: var(--npcshop-background);
+    background-size: cover;
+    color: var(--npcshop-text-color);
+    border: 1px solid var(--npcshop-border-color);
+    border-radius: 8px;
+}
+
+/* Header Styling */
+.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid var(--npcshop-background);
+    background: var(--npcshop-header-bg);
+    color: var(--npcshop-highlight-color);
+}
+
+.sheet-header img.npc-profile-img {
+    width: 48px;
+    height: 48px;
+    margin-right: 15px;
+    border-radius: 50%;
+    border: 2px solid var(--npcshop-border-color);
+}
+
+.sheet-header h1 {
+    font-size: 20px;
+    margin: 0;
+    color: var(--npcshop-highlight-color);
+}
+
+.character-funds {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 10px;
+    align-items: left;
+  }
+  
+  .character-funds img {
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
+    margin-right: 0px;
+  }
+  
+
+/* Vertical Tabs Navigation (Unchanged) */
+.npc-shop nav.sheet-tabs {
+    --tab-full-width: 56px;
+    --tab-hover-width: 50px;
+    --tab-inactive-width: 45px;
+    position: absolute;
+    left: 100%;
+    top: calc(var(--ars-sheet-header-height) + 1rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    z-index: -1;
+}
+
+.npc-shop nav.sheet-tabs .tab-item {
+    width: var(--tab-full-width);
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--npcshop-tab-background);
+    color: var(--npcshop-tab-inactive);
+    border-radius: 0 8px 8px 0;
+    font-size: 24px;
+    margin-left: calc((var(--tab-full-width) - var(--tab-inactive-width)) * -1);
+    transition: all 250ms ease;
+    cursor: pointer;
+}
+
+.npc-shop nav.sheet-tabs .tab-item:hover,
+.npc-shop nav.sheet-tabs .tab-item.active {
+    margin-left: 0;
+    color: var(--npcshop-tab-active);
+    background: var(--npcshop-tab-hover);
+    box-shadow: 0 0 6px var(--npcshop-tab-active);
+}
+
+.npc-shop nav.sheet-tabs .tab-item i {
+    font-size: 24px;
+    transition: color 250ms ease;
+}
+
+.npc-shop nav.sheet-tabs .tab-item:hover i,
+.npc-shop nav.sheet-tabs .tab-item.active i {
+    color: var(--npcshop-tab-active);
+}
+
+/* Content Area */
+.npc-shop .sheet-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: var(--npcshop-background);
+    display: none;
+    border: 1px solid var(--npcshop-border-color);
+    border-radius: 0 10px 10px 0;
+}
+
+.npc-shop .sheet-body.active {
+    display: block;
+}
+
+/* List Styling (Inventory, Cart, Services) */
+.npc-shop .inventory-list,
+.npc-shop .cart-list,
+.npc-shop .service-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.npc-shop .inventory-list li,
+.npc-shop .cart-item,
+.npc-shop .service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--npcshop-border-color);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+}
+
+/* Image Styling */
+.item-img {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--npcshop-border-color);
+    border-radius: 3px;
+    object-fit: cover;
+}
+
+/* Quantity Input Styling */
+.npc-shop .merchant-controls input[type="number"],
+.npc-shop .cart-controls input[type="number"],
+.npc-shop .service-controls input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid var(--npcshop-border-color);
+    border-radius: 5px;
+}
+
+/* Control Buttons */
+.npc-shop .item-control {
+    cursor: pointer;
+    padding: 5px;
+    background: none;
+    border: none;
+    transition: color 0.2s ease;
+}
+
+.npc-shop .item-control i {
+    font-size: 16px;
+    color: var(--npcshop-text-color);
+}
+
+.npc-shop .item-control:hover i {
+    color: var(--npcshop-highlight-color);
+}
+
+/* Cart Section */
+.npc-shop .cart-section {
+    margin-top: 20px;
+    border-top: 1px solid var(--npcshop-border-color);
+    padding-top: 10px;
+}
+
+.npc-shop .cart-total {
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: right;
+}
+
+/* Forge Section */
+.npc-shop .armor-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid var(--npcshop-border-color);
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.npc-shop .armor-item.headers {
+    font-weight: bold;
+    border-bottom: 2px solid var(--npcshop-border-color);
+    background-color: #faf0d2;
+}
+
+.npc-shop .armor-item .repair-controls {
+    margin-left: auto;
+}
+
+/* Form Inputs for Settings */
+.npc-shop .form-group input,
+.npc-shop .form-group select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid var(--npcshop-border-color);
+    border-radius: 5px;
+    background: var(--npcshop-background);
+    color: var(--npcshop-text-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .npc-shop {
+        flex-direction: column;
+    }
+
+    nav.sheet-tabs {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--npcshop-border-color);
+    }
+
+    nav.sheet-tabs .tab-item {
+        height: 40px;
+        border-radius: 0;
+    }
+}
+
+/* GM Section */
+
+/* Shop Name Section Styling */
+.shop-name-section {
+    background: var(--npcshop-background);
+    border: 1px solid var(--npcshop-border-color); /* Same border as inventory table */
+    border-radius: 5px; /* Subtle rounding to match */
+    padding: 10px; /* Space around the content */
+    margin-bottom: 15px; /* Add space between sections */
+  }
+  
+  /* Table for Shop Name */
+  .shop-name-table {
+    width: 100%; /* Stretch to fit the section */
+    table-layout: auto; /* Flexible column widths */
+    border-collapse: collapse; /* Match inventory table styling */
+  }
+  
+  .shop-name-table td {
+    padding: 10px; /* Consistent with inventory table cells */
+    background: var(--npcshop-background);
+    vertical-align: middle; /* Align portrait and input field vertically */
+    border-bottom: 1px solid var(--npcshop-border-color); /* Same row border as inventory */
+    text-align: left; /* Align text for consistency */
+  }
+  
+  /* Portrait Styling */
+  .portrait-column img.shop-portrait {
+    width: 100px; /* Compact portrait size to match */
+    height: 100px;
+    border-radius: 3px; /* Slight rounding to match images */
+    object-fit: cover; /* Maintain aspect ratio */
+    border: 1px solid var(--npcshop-border-color); /* Match item images */
+  }
+  
+  /* Name Input Field */
+  .name-input-column input#shop-name-input {
+    width: 100%; /* Full width of the column */
+    padding: 5px; /* Comfortable padding */
+    font-size: 14px; /* Standard text size */
+    border: 1px solid var(--npcshop-border-color); /* Match inventory input fields */
+    border-radius: 3px; /* Slight rounding */
+    background-color: white; /* White background for contrast */
+    color: black; /* Black text for readability */
+    box-shadow: none; /* Cleaner look */
+  }
+  
+  .name-input-column input#shop-name-input:focus {
+    outline: 2px solid var(--npcshop-highlight-color); /* Highlight on focus */
+  }
+  
+  /* Ensure Rows Match Inventory Style */
+  .shop-name-section table tr {
+    background-color: rgba(255, 255, 255, 0.8); /* Same row background as inventory */
+  }
+  
+  
+  
+
+
+.gm-multipliers {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .gm-multipliers th,
+  .gm-multipliers td {
+    padding: 8px;
+    border: 1px solid var(--border-color, #ddd);
+  }
+  
+  .gm-multipliers thead th {
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .gm-multipliers input {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  
+  .gm-multipliers tbody td {
+    width: 12.5%; /* Ensures even width for all fields */
+  }
+
+/* Inventory Table */
+.inventory-table {
+    width: 100%;
+    table-layout: auto; /* Allow columns to fit their content naturally */
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 14px;
+    text-align: left;
+}
+
+
+/* Table Header */
+.inventory-table thead {
+    background-color: var(--npcshop-header-bg); /* Use consistent header color */
+    color: var(--npcshop-highlight-color);
+    text-align: center; /* Center-align headers */
+}
+
+/* Header and Cell Alignment */
+.inventory-table th,
+.inventory-table td {
+    padding: 10px; /* Consistent padding */
+    border-bottom: 1px solid var(--npcshop-border-color); /* Subtle row borders */
+    vertical-align: middle; /* Align content vertically in the middle */
+    overflow: hidden; /* Prevent content overflow */
+}
+
+/* Image Column */
+.inventory-table .image-column {
+    width: 8%; /* Compact space for images */
+    text-align: center;
+}
+
+/* Name Column */
+.inventory-table .name-column {
+    width: 45%; /* Allow the name to take most of the table width */
+    text-align: left; /* Align names for readability */
+    padding-left: 8px; /* Add spacing between the image and name */
+    white-space: nowrap; /* Prevent wrapping */
+    text-overflow: ellipsis; /* Show '...' if the name overflows */
+}
+
+/* Type Column */
+.inventory-table .type-column {
+    width: 12%;
+    text-align: left;
+}
+
+/* Quantity Column */
+.inventory-table .quantity-column {
+    width: 15%; /* Ensure this column is proportional and doesn’t stretch */
+    text-align: center; /* Align the input in the middle */
+}
+
+
+/* Cost and Weight Columns */
+.inventory-table .cost-column,
+.inventory-table .weight-column {
+    width: 10%; /* Compact width for numbers */
+    text-align: right; /* Right-align for readability */
+}
+
+/* Actions Column */
+.inventory-table .actions-column {
+    width: 5%; /* Small space for action buttons */
+    text-align: center;
+}
+
+/* Images */
+.inventory-table img {
+    width: 36px; /* Adjusted for balance */
+    height: 36px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid var(--npcshop-border-color);
+}
+
+/* Quantity Input */
+.quantityInput {
+    width: 75px !important; /* Fixed width for the field */
+    max-width: 75px !important; /* Prevent scaling larger */
+    min-width: 75px !important; /* Prevent shrinking smaller */
+    text-align: right; /* Align text in the middle */
+    padding: 2px; /* Minimal padding for compactness */
+    font-size: 14px; /* Standard table font size */
+    border: 1px solid var(--npcshop-border-color); /* Match shop theme */
+    border-radius: 3px; /* Rounded corners */
+    background-color: rgba(255, 255, 255, 0.8); /* Subtle background */
+    box-sizing: border-box; /* Include padding/border in width */
+}
+
+
+.quantityInput:focus {
+    outline: 2px solid var(--npcshop-highlight-color); /* Highlight input on focus */
+}
+
+
+/* Delete Button */
+.itemDeleteBtn i {
+    font-size: 14px;
+}
+
+/* No Items Row Styling */
+.inventory-table .no-items-row td {
+    text-align: center; /* Center-align placeholder text */
+    padding: 15px;
+    font-style: italic;
+    color: var(--npcshop-border-color);
+}
