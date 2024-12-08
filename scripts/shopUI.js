@@ -5,8 +5,6 @@ import { toCopper, fromCopper, adjustCost, handleTransaction } from "./currencyM
 import ShopCore from "./shopCore.js";
 import ServicesManager from "./services.js";
 
-
-
 /**
  * Class definition for the NPC Shop Sheet.
  */
@@ -33,15 +31,6 @@ class NPCShopUI extends ActorSheet {
     // Initialize ForgeManager with the actor, customer placeholder, and null element
     this.forgeManager = new ForgeManager(this.actor, {}, null);
   }
-
-
-
-
-
-
-
-
-
 
 /** Fetch data for rendering the sheet */
 async getData() {
@@ -226,30 +215,6 @@ async getData() {
 
   return data;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
 /** Activate sheet listeners */
 activateListeners(html) {
@@ -338,7 +303,7 @@ activateListeners(html) {
           callback: async () => {
             try {
               await this.actor.deleteEmbeddedDocuments("Item", [itemId]);
-              ui.notifications.info("Item deleted successfully.");
+              //ui.notifications.info("Item deleted successfully.");
               this.render(false); // Re-render the sheet to reflect changes
             } catch (error) {
               console.error("Error deleting item:", error);
@@ -376,7 +341,7 @@ activateListeners(html) {
     if (newName !== currentName) {
       try {
         await this.actor.update({ name: newName });
-        ui.notifications.info(`Shop name updated to "${newName}".`);
+        //ui.notifications.info(`Shop name updated to "${newName}".`);
         this.render(false); // Re-render to update header
       } catch (error) {
         console.error("Failed to update shop name:", error);
@@ -397,7 +362,7 @@ activateListeners(html) {
         try {
           await this.actor.update({ img: path });
           imgElement.src = path;
-          ui.notifications.info("Shop portrait updated successfully.");
+          //ui.notifications.info("Shop portrait updated successfully.");
         } catch (error) {
           console.error("Failed to update the portrait:", error);
           ui.notifications.error("Failed to update the shop portrait.");
@@ -646,7 +611,7 @@ html.on("click", ".itemBuyButton", async (event) => {
       services.splice(Number(serviceIndex), 1);
 
       await this.actor.setFlag("world", "services", services);
-      ui.notifications.info("Service deleted successfully.");
+      //ui.notifications.info("Service deleted successfully.");
       this.render(false); // Re-render the sheet
     } catch (error) {
       console.error("Error deleting service:", error);
@@ -689,7 +654,7 @@ html.on("click", ".itemBuyButton", async (event) => {
               services.push({ name, cost });
               await this.actor.setFlag("world", "services", services);
 
-              ui.notifications.info("New service added successfully.");
+              //ui.notifications.info("New service added successfully.");
               this.render(false); // Re-render the sheet
             } catch (error) {
               console.error("Error adding service:", error);
@@ -737,7 +702,7 @@ html.on("click", ".itemBuyButton", async (event) => {
       }
 
       await this.actor.setFlag("world", "services", services);
-      ui.notifications.info("Service updated successfully.");
+      //ui.notifications.info("Service updated successfully.");
     } catch (error) {
       console.error("Error updating service:", error);
       ui.notifications.error("Failed to update service.");
@@ -899,9 +864,7 @@ console.log({
                 );
               }
   
-              ui.notifications.info(
-                `Successfully sold ${quantity} ${playerItem.name}(s) for ${totalEarnedDisplay}.`
-              );
+              //ui.notifications.info(`Successfully sold ${quantity} ${playerItem.name}(s) for ${totalEarnedDisplay}.`);
             } catch (error) {
               console.error("NPCShopUI | Error processing sale:", error);
               ui.notifications.error("Failed to complete sale.");
@@ -955,48 +918,11 @@ html.on("click", ".repair-item-btn", async (event) => {
   const maxDurability = itemToRepair.system.protection?.points?.max || 0;
   await itemToRepair.update({ "system.protection.points.value": maxDurability });
 
-  ui.notifications.info(`Successfully repaired ${itemToRepair.name}.`);
+  //ui.notifications.info(`Successfully repaired ${itemToRepair.name}.`);
   this.forgeManager.updateForgeUI();
 });
-
-
-
-
-
-
-  
-  
-  
-  
-
-  
-
   console.log("Listeners attached successfully.");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   /** Hook into rendering to restore the active tab */
   async _render(force = false, options = {}) {
     const isFirstRender = !this.actor.getFlag("world", "hasRenderedOnce"); // Detect first render
@@ -1109,15 +1035,12 @@ async function createShopActor() {
     // Explicitly set the sheet class to NPCShopUI
     await newShopActor.setFlag("core", "sheetClass", "core.NPCShopUI");
 
-    ui.notifications.info(`Created a new NPC Shop: ${newShopActor.name}`);
+    //ui.notifications.info(`Created a new NPC Shop: ${newShopActor.name}`);
     newShopActor.sheet.render(true);
   } else {
     ui.notifications.error("Failed to create NPC Shop.");
   }
-
   
 }
-
-
 
 export { NPCShopUI };

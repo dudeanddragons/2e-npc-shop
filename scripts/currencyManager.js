@@ -229,7 +229,7 @@ async function handleTransaction(actor, costInCopper) {
         })
     );
 
-    ui.notifications.info(`${actor.name} successfully completed the transaction.`);
+    //ui.notifications.info(`${actor.name} successfully completed the transaction.`);
     return true;
 }
 

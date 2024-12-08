@@ -315,10 +315,6 @@
   .shop-name-section table tr {
     background-color: rgba(255, 255, 255, 0.8); /* Same row background as inventory */
   }
-  
-  
-  
-
 
 .gm-multipliers {
     width: 100%;
@@ -439,11 +435,9 @@
     box-sizing: border-box; /* Include padding/border in width */
 }
 
-
 .quantityInput:focus {
     outline: 2px solid var(--npcshop-highlight-color); /* Highlight input on focus */
 }
-
 
 /* Delete Button */
 .itemDeleteBtn i {

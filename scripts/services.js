@@ -69,7 +69,7 @@ export default class ServicesManager {
 
         if (success) {
           console.log("ServicesManager | Transaction successful.");
-          ui.notifications.info(`Successfully used service: ${service.name}`);
+          //ui.notifications.info(`Successfully used service: ${service.name}`);
         } else {
           console.warn("ServicesManager | Insufficient funds for the service.");
           ui.notifications.error("Insufficient funds for this service.");

@@ -30,35 +30,6 @@ The module consists of the following key files:
 - **npcShopSheet.hbs**: Template for the shop interface.
 - **module.json**: Module metadata and configuration.
 
-## Setup Instructions
-
-1. **Install the Module**
-   - Place the module files in the appropriate Foundry VTT directory.
-
-2. **Configure the Module**
-   - Open the Module Management section in Foundry VTT and activate the module.
-   - Create or select an NPC actor and set its sheet to `2e NPC Shop`.
-
-3. **Load the Shop**
-   - Add items to the shop inventory using drag-and-drop.
-   - Configure shop settings (e.g., multipliers, repair costs) in the GM view.
-
-4. **Test the Shop**
-   - Open the shop with a player account and interact with the features.
-   - Verify that GMs can manage inventory and configure settings.
-
-## Planned Features
-
-- **Currency Manager**: Advanced currency conversion and payment handling.
-- **Service Management**: Add or remove services, calculate costs for repairs or enhancements.
-- **Forge Mechanics**: Implement repair and upgrade logic for items.
-
-## Best Practices
-
-- **Modular Design**: Keep scripts focused on specific responsibilities for maintainability.
-- **Player vs. GM Separation**: Ensure clear delineation between player-accessible and GM-only features.
-- **CSS Alignment**: Use `npcShop.css` to ensure consistent styling across the module.
-
 ## Contributing
 
 Contributions and feedback are welcome! Please submit issues or pull requests to the module's repository.

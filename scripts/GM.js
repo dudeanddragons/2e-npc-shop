@@ -74,7 +74,7 @@ class GMManager {
     }
 
     await this.actor.update(updates, { diff: false, render: false });
-    ui.notifications.info("All multipliers have been saved.");
+    //ui.notifications.info("All multipliers have been saved.");
     restoreActiveTab(this.html, activeTab);
   }
 
@@ -84,7 +84,7 @@ class GMManager {
     try {
       await this.actor.setFlag("world", "services", services);
       this.services = services;
-      ui.notifications.info("Services updated successfully.");
+      //ui.notifications.info("Services updated successfully.");
     } catch (error) {
       console.error("Error saving services:", error);
       ui.notifications.error("Failed to save services.");
@@ -160,12 +160,12 @@ class GMManager {
 
         console.log(`Updating quantity for "${existingItem.name}": ${currentQuantity} + ${addedQuantity} = ${newQuantity}`);
         await existingItem.update({ "system.quantity": newQuantity });
-        ui.notifications.info(`${existingItem.name} quantity updated to ${newQuantity}.`);
+        //ui.notifications.info(`${existingItem.name} quantity updated to ${newQuantity}.`);
       } else {
         console.log(`Adding new item to inventory: ${droppedItemData.name}`);
         droppedItemData.system.quantity = droppedItemData.system.quantity || 1;
         await this.actor.createEmbeddedDocuments("Item", [droppedItemData]);
-        ui.notifications.info(`New item "${droppedItemData.name}" added to inventory.`);
+        //ui.notifications.info(`New item "${droppedItemData.name}" added to inventory.`);
       }
     } catch (error) {
       console.error("Error handling item drop:", error);
@@ -243,7 +243,7 @@ calculateAdjustedCosts(items, multipliers) {
       try {
         // Update the multiplier
         await this.actor.setFlag("world", key, value);
-        ui.notifications.info(`Updated ${key} to ${value}.`);
+        //ui.notifications.info(`Updated ${key} to ${value}.`);
     
         // Recalculate and re-render costs
         const { multipliers } = await this.fetchMultipliersAndServices();
