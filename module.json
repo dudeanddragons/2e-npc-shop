@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "compatibility": {
     "minimum": "12",
-    "verified": "12"
+    "verified": "12",
+    "maximum": "12"
   },
   "scripts": [
 
@@ -51,5 +52,5 @@
       "flags": {}
     }
   ],
-  "manifest": ""
+  "manifest": "https://github.com/dudeanddragons/2e-npc-shop/blob/2e-npc-shop/module.json"
 }
